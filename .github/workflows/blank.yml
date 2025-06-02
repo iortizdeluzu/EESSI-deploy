@@ -16,16 +16,17 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build-local:
-    runs-on: [self-hosted]
+    runs-on: local
     steps:
       - uses: actions/checkout@v4
-
       - name: Load EasyBuild as scicomp and check version
         run: |
-          sudo -u scicomp bash -c 'source /etc/profile && module load EasyBuild && eb --version'
+          ml av Go
+          ml load Go
+          go version
 
   build-hyperion:
-    runs-on: self-hosted
+    runs-on: hyperion
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
