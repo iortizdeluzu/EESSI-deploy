@@ -24,28 +24,30 @@ jobs:
           ml av Go
           ml load Go
           go version
+          ml load EasyBuild
+          eb --version
 
-  build-hyperion:
-    runs-on: hyperion
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+  #build-hyperion:
+  #  runs-on: hyperion
+  #  # Steps represent a sequence of tasks that will be executed as part of the job
+  #  steps:
+  #    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #    - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+  #    # Runs a single command using the runners shell
+  #    - name: Run a one-line script
+  #      run: echo Hello, world!
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-      - name: Source modules and load Go
-        run: |
-          source /etc/profile       # or the path to your modules init script
-          module load Go
-          go version
-      - name: Run EasyBuild as scicomp
-        run: |
-          sudo -u iortiz bash -c 'source /etc/profile && module load EasyBuild && eb --version'
+  #    # Runs a set of commands using the runners shell
+  #    - name: Run a multi-line script
+  #      run: |
+  #        echo Add other actions to build,
+  #        echo test, and deploy your project.
+  #    - name: Source modules and load Go
+  #      run: |
+  #        source /etc/profile       # or the path to your modules init script
+  #        module load Go
+  #        go version
+  #    - name: Run EasyBuild as scicomp
+  #      run: |
+  #        sudo -u iortiz bash -c 'source /etc/profile && module load EasyBuild && eb --version'
