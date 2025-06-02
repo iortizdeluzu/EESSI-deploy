@@ -19,6 +19,7 @@ jobs:
     run-as-scicomp:
       runs-on: [self-hosted]
       steps:
+        - uses: actions/checkout@v4
         - name: Load EasyBuild as scicomp and check version
           run: |
             sudo -u scicomp bash -c 'source /etc/profile && module load EasyBuild && eb --version'
