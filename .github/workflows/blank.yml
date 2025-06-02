@@ -36,6 +36,10 @@ jobs:
           source /etc/profile       # or the path to your modules init script
           module load Go
           go version
+          run-as-scicomp:
+      - name: Run EasyBuild as scicomp
+        run: |
+          su - scicomp -c 'source /etc/profile && module load EasyBuild && eb --version'
 
   build-hyperion:
     runs-on: self-hosted
@@ -58,3 +62,6 @@ jobs:
           source /etc/profile       # or the path to your modules init script
           module load Go
           go version
+      - name: Run EasyBuild as scicomp
+        run: |
+          su - scicomp -c 'source /etc/profile && module load EasyBuild && eb --version'
