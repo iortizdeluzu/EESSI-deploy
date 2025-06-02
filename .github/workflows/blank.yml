@@ -15,8 +15,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
+  build-local:
+    runs-on: EESSI-local
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -32,7 +32,7 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
-  build-linux:
+  build-hyperion:
     runs-on: hyperion-010
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
