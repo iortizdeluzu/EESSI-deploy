@@ -47,4 +47,4 @@ jobs:
           go version
       - name: Run EasyBuild as scicomp
         run: |
-          su - scicomp -c 'source /etc/profile && module load EasyBuild && eb --version'
+          sudo -u scicomp bash -c 'source /etc/profile && module load EasyBuild && eb --version'
