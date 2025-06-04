@@ -30,9 +30,9 @@ jobs:
           sudo systemctl start apache2
           cd /cvmfs/example.domain.tld/
           if [ $? -eq 0 ];then "CVMFS repo has been mounted"
-          else 
-          echo "CVMFS has not been mounted"; 
-          exit
+            else 
+            echo "CVMFS has not been mounted"; 
+            exit
           else
           echo OK; fi
       - name: Check if cvmfs is mounted
