@@ -22,16 +22,24 @@ jobs:
       - name: Check if I am stratum0
         run: |
           cd /cvmfs/example.domain.tld/
-          if [ $? -ne 0 ];then echo noOK; 
+          if [ $? -ne 0 ];then 
+          yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
+          sudo apt install apache2 cvmfs cvmfs-server
+          sudo cvmfs_server mkfs example.domain.tld
+          sudo systemctl enable apache2
+          sudo systemctl start apache2
+          cd /cvmfs/example.domain.tld/
+          if [ $? -eq 0 ];then "CVMFS repo has been mounted"
           else 
+          echo "CVMFS has not been mounted"; 
+          exit
+          else
           echo OK; fi
       - name: Check if cvmfs is mounted
         run: |
           cd /cvmfs/example.domain.tld/
           if [ $? -eq 0 ];then echo OK; else 
-     #     ml load EasyBuild
-     #     eb --version
-     #     eb Go-1.22.1.eb -r
+
 
   #build-hyperion:
   #  runs-on: hyperion
