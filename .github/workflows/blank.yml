@@ -19,40 +19,28 @@ jobs:
     runs-on: local
     steps:
       - uses: actions/checkout@v4
-      - name: Load EasyBuild as scicomp and check version
+      - name: Check if I am stratum0
         run: |
-          ml av Go
-          whoami
+          cd /cvmfs/example.domain.tld/
+          if [ $? -ne 0 ];then echo noOK; 
+          else 
+          echo OK; fi
       - name: Check if cvmfs is mounted
         run: |
           cd /cvmfs/example.domain.tld/
-          if [ $? -eq 0 ];then echo OK; fi
+          if [ $? -eq 0 ];then echo OK; else 
      #     ml load EasyBuild
      #     eb --version
      #     eb Go-1.22.1.eb -r
 
-  build-hyperion:
-    runs-on: hyperion
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+  #build-hyperion:
+  #  runs-on: hyperion
+  #  # Steps represent a sequence of tasks that will be executed as part of the job
+  #  steps:
+  #    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #    - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: |
-          ebw -f Go -c cascadelake.yaml 
-
-  #    # Runs a set of commands using the runners shell
-  #    - name: Run a multi-line script
+  #    # Runs a single command using the runners shell
+  #    - name: Run a one-line script
   #      run: |
-  #        echo Add other actions to build,
-  #        echo test, and deploy your project.
-  #    - name: Source modules and load Go
-  #      run: |
-  #        source /etc/profile       # or the path to your modules init script
-  #        module load Go
-  #        go version
-  #    - name: Run EasyBuild as scicomp
-  #      run: |
-  #        sudo -u iortiz bash -c 'source /etc/profile && module load EasyBuild && eb --version'
+  #        ebw -f Go -c cascadelake.yaml 
