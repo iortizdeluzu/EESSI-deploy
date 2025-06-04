@@ -28,11 +28,6 @@ jobs:
           sudo cvmfs_server mkfs example.domain.tld
           sudo systemctl enable apache2
           sudo systemctl start apache2
-          cd /cvmfs/example.domain.tld/
-          if [ $? -eq 0 ];then "CVMFS repo has been mounted"
-            else 
-            echo "CVMFS has not been mounted"; 
-            exit
           else
           echo OK; fi
       - name: Check if cvmfs is mounted
@@ -41,14 +36,14 @@ jobs:
           if [ $? -eq 0 ];then echo OK; else 
 
 
-  #build-hyperion:
-  #  runs-on: hyperion
-  #  # Steps represent a sequence of tasks that will be executed as part of the job
-  #  steps:
-  #    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #    - uses: actions/checkout@v4
+  build-hyperion:
+    runs-on: hyperion
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
 
-  #    # Runs a single command using the runners shell
-  #    - name: Run a one-line script
-  #      run: |
-  #        ebw -f Go -c cascadelake.yaml 
+      # Runs a single command using the runners shell
+      - name: Check if I reach Stratum0
+        run: |
+          cvmfs_config stat -v example.domain.tld
