@@ -48,6 +48,14 @@ jobs:
           # Install CVMFS and server components
           echo "$SUDO_PASSWORD" | sudo apt-get install -y apache2 cvmfs cvmfs-server
 
+      - name: Configure CVMFS repository
+        run: |
+          sudo mkdir -p /etc/cvmfs/repositories.d/example.domain.tld
+          echo "CVMFS_HTTP_PROXY=DIRECT" | sudo tee /etc/cvmfs/default.local
+          echo "CVMFS_SERVER_URL=http://localhost/cvmfs/@fqrn@" | sudo tee /etc/cvmfs/repositories.d/example.domain.tld/server.conf
+          echo "CVMFS_KEYS_DIR=/etc/cvmfs/keys" | sudo tee -a /etc/cvmfs/repositories.d/example.domain.tld/server.conf
+          echo "CVMFS_PUBLIC_KEY=/etc/cvmfs/keys/example.domain.tld.pub" | sudo tee -a /etc/cvmfs/repositories.d/example.domain.tld/server.conf
+
           # Configure the Stratum0 repository
           # Only create repo if it doesn't already exist
           if [ ! -d "/var/spool/cvmfs/example.domain.tld" ]; then
