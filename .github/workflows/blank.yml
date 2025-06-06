@@ -40,12 +40,12 @@ jobs:
 
       - name: Configure repository file
         run: |
-          REPO_CONF="/etc/cvmfs/repositories.d/example.domain.tld.conf"
+          REPO_CONF="/etc/cvmfs/repositories.d/example.domain.tld/server.conf"
           sudo bash -c "cat > $REPO_CONF <<EOF
-          CVMFS_SERVER_REPOSITORY=example.domain.tld
-          CVMFS_SERVER_STRATUM=0
-          CVMFS_SERVER_STORAGE=/cvmfs/example.domain.tld
-          CVMFS_SERVER_KEYS=/etc/cvmfs/keys/example.domain.tld
+          CVMFS_STRATUM0=http://localhost/cvmfs/example.domain.tld
+          CVMFS_SERVER_URL=http://localhost/cvmfs/@fqrn@
+          CVMFS_KEYS_DIR=/etc/cvmfs/keys
+          CVMFS_REPO_NAME=example.domain.tld
           EOF"
 
       - name: Create storage directory
