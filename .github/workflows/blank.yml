@@ -20,64 +20,44 @@ jobs:
     env:
       SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-          
-      - name: Check if CVMFS Stratum0 is already mounted
-        id: check-mounted
+      - name: Install dependencies
         run: |
-          if [ -d "/cvmfs/example.domain.tld" ] && mountpoint -q /cvmfs/example.domain.tld; then
-            echo "Stratum0 already mounted."
-            echo "mounted=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Stratum0 not mounted."
-            echo "mounted=false" >> "$GITHUB_OUTPUT"
-          fi
+          sudo apt-get update
+          sudo apt-get install -y cvmfs cvmfs-server
 
-      - name: Install and configure CVMFS Stratum0 (if not mounted)
-        if: steps.check-mounted.outputs.mounted == 'false'
+      - name: Generate repository keys
         run: |
-          # Install prerequisites
-          echo "$SUDO_PASSWORD" | sudo apt-get install -y wget lsb-release
-          wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb
-          echo "$SUDO_PASSWORD" | sudo dpkg -i cvmfs-release-latest_all.deb
-          echo "$SUDO_PASSWORD" | sudo apt-get install -y cvmfs
-          wget https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
-           echo "$SUDO_PASSWORD" |sudo dpkg -i cvmfs-config-eessi_latest_all.deb
+          sudo cvmfs_server generate_keys example.domain.tld
 
-          # Install CVMFS and server components
-          echo "$SUDO_PASSWORD" | sudo apt-get install -y apache2 cvmfs cvmfs-server
-
-      - name: Configure CVMFS repository
+      - name: Initialize repository (mkfs)
         run: |
-          sudo mkdir -p /etc/cvmfs/repositories.d/example.domain.tld
-          echo "CVMFS_HTTP_PROXY=DIRECT" | sudo tee /etc/cvmfs/default.local
-          echo "CVMFS_SERVER_URL=http://localhost/cvmfs/@fqrn@" | sudo tee /etc/cvmfs/repositories.d/example.domain.tld/server.conf
-          echo "CVMFS_KEYS_DIR=/etc/cvmfs/keys" | sudo tee -a /etc/cvmfs/repositories.d/example.domain.tld/server.conf
-          echo "CVMFS_PUBLIC_KEY=/etc/cvmfs/keys/example.domain.tld.pub" | sudo tee -a /etc/cvmfs/repositories.d/example.domain.tld/server.conf
+          sudo cvmfs_server mkfs example.domain.tld
 
-          # Configure the Stratum0 repository
-          # Only create repo if it doesn't already exist
-          if [ ! -d "/var/spool/cvmfs/example.domain.tld" ]; then
-            echo "Creating CVMFS repo..."
-            sudo cvmfs_server mkfs example.domain.tld -w iker@example.domain.tld -o iker
-          else
-            echo "The repository example.domain.tld already exists"
-          fi
-
-          # Enable and start Apache
-          echo "$SUDO_PASSWORD" | sudo systemctl enable apache2
-          echo "$SUDO_PASSWORD" | sudo systemctl start apache2
-
-      - name: Final mount check
+      - name: Configure repository file
         run: |
-          export CVMFS_HTTP_PROXY=DIRECT
-          sudo cvmfs_config setup
-          sudo cvmfs_config reload
-          sudo mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld || true
+          REPO_CONF="/etc/cvmfs/repositories.d/example.domain.tld.conf"
+          sudo bash -c "cat > $REPO_CONF <<EOF
+          CVMFS_SERVER_REPOSITORY=example.domain.tld
+          CVMFS_SERVER_STRATUM=0
+          CVMFS_SERVER_STORAGE=/srv/cvmfs/example.domain.tld
+          CVMFS_SERVER_KEYS=/etc/cvmfs/keys/example.domain.tld
+          EOF"
 
-          if mountpoint -q /cvmfs/example.domain.tld; then
-            echo "✅ CVMFS Stratum0 is mounted."
-          else
-            echo "❌ Failed to mount CVMFS Stratum0." && exit 1
-          fi
+      - name: Create storage directory
+        run: |
+          sudo mkdir -p /srv/cvmfs/example.domain.tld
+          sudo chown -R $(whoami):$(whoami) /srv/cvmfs/example.domain.tld
+
+      - name: Publish initial repository
+        run: |
+          sudo cvmfs_server publish example.domain.tld
+
+      - name: Start and enable CVMFS server service
+        run: |
+          sudo systemctl start cvmfs-server
+          sudo systemctl enable cvmfs-server
+
+      - name: Mount repository (for testing)
+        run: |
+          sudo mkdir -p /cvmfs/example.domain.tld
+          sudo mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld
