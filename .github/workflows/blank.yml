@@ -33,13 +33,16 @@ jobs:
           sudo apt install -y apache2 cvmfs cvmfs-server
           
 
-      - name: Initialize repository (mkfs)
+      - name: Fully clean CVMFS repo
         run: |
           echo "$SUDO_PASSWORD" | sudo -S systemctl stop autofs
-          echo "$SUDO_PASSWORD" | sudo -S cvmfs_server rmfs example.domain.tld
+          echo "$SUDO_PASSWORD" | sudo -S cvmfs_server rmfs example.domain.tld || true
+          echo "$SUDO_PASSWORD" | sudo -S rm -rf /etc/cvmfs/repositories.d/example.domain.tld
+          echo "$SUDO_PASSWORD" | sudo -S rm -rf /var/spool/cvmfs/example.domain.tld
+
+      - name: Create CVMFS Stratum 0 repo
+        run: |
           echo "$SUDO_PASSWORD" | sudo -S cvmfs_server mkfs example.domain.tld
-          echo "$SUDO_PASSWORD" | sudo -S systemctl enable apache2
-          echo "$SUDO_PASSWORD" | sudo -S systemctl start apache2
 
 
 
