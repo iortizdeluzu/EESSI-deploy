@@ -43,7 +43,7 @@ jobs:
       - name: Creating Keys
         run: |
           mkdir -p /etc/cvmfs/keys/example.domain.tld
-          echo "$SUDO_PASSWORD" | sudo -S openssl genrsa -out /etc/cvmfs/keys/example.domain.tld.masterkey 4096
+          echo "$SUDO_PASSWORD" | sudo -S openssl genrsa -out /etc/cvmfs/keys/example.domain.tld.key 4096
           echo "$SUDO_PASSWORD" | sudo -S openssl rsa -in /etc/cvmfs/keys/example.domain.tld.key -pubout -out /etc/cvmfs/keys/example.domain.tld.pub
           echo "$SUDO_PASSWORD" | sudo -S openssl req -new -x509 -days 3650 -key /etc/cvmfs/keys/example.domain.tld.key -out /etc/cvmfs/keys/example.domain.tld.crt -subj "/CN=example.domain.tld"
           echo "$SUDO_PASSWORD" | sudo -S chown root:root /etc/cvmfs/keys/example.domain.tld.*
