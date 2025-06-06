@@ -13,54 +13,51 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  build-local:
+# A workflow run ijobs:
+  setup-stratum0:
     runs-on: local
     steps:
-      - uses: actions/checkout@v4
-      - name: Check if I am stratum0
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check if CVMFS Stratum0 is already mounted
+        id: check-mounted
         run: |
-          cd /cvmfs/example.domain.tld/
-          if [ $? -ne 0 ];then 
-          yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
-          sudo apt install apache2 cvmfs cvmfs-server
-          sudo cvmfs_server mkfs example.domain.tld
+          if [ -d "/cvmfs/example.domain.tld" ] && mountpoint -q /cvmfs/example.domain.tld; then
+            echo "Stratum0 already mounted."
+            echo "mounted=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Stratum0 not mounted."
+            echo "mounted=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install and configure CVMFS Stratum0 (if not mounted)
+        if: steps.check-mounted.outputs.mounted == 'false'
+        run: |
+          # Install prerequisites
+          sudo apt-get update
+          sudo apt-get install -y wget lsb-release gnupg
+
+          # Install CVMFS release package
+          wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
+          sudo alien --scripts cvmfs-release-latest.noarch.rpm  # convert RPM to DEB
+          sudo dpkg -i cvmfs-release-latest.noarch.deb || true
+          sudo apt-get update
+
+          # Install CVMFS and server components
+          sudo apt-get install -y apache2 cvmfs cvmfs-server
+
+          # Configure the Stratum0 repository
+          sudo cvmfs_server mkfs example.domain.tld <<EOF
+
+          # Enable and start Apache
           sudo systemctl enable apache2
           sudo systemctl start apache2
-          else
-          echo OK; fi
-      - name: Check if cvmfs is mounted
+
+      - name: Final mount check
         run: |
-          cd /cvmfs/example.domain.tld/
-          if [ $? -eq 0 ];then echo OK; else echo NoOK; fi
-
-
-  build-hyperion:
-    runs-on: hyperion
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-
-      # Runs a single command using the runners shell
-      - name: Check if I reach Stratum0
-        run: |
-          cvmfs_config stat -v example.domain.tld
-          if [ $? -eq 0 ];then 
-          I am reaching Stratum0
+          if mountpoint -q /cvmfs/example.domain.tld; then
+            echo "CVMFS Stratum0 is mounted."
           else
-          sudo yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
-          sudo yum install -y cvmfs
-          sudo yum install -y https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi-latest.noarch.rpm
-          sudo bash -c "echo 'CVMFS_CLIENT_PROFILE="single"' > /etc/cvmfs/default.local"
-          sudo bash -c "echo 'CVMFS_QUOTA_LIMIT=10000' >> /etc/cvmfs/default.local" > /etc/cvmfs/example.domain.tld
-          # Setup the stratum0 configuration
-          sudo bash -c "echo 'CVMFS_SERVER_URL=http://158.227.172.103/cvmfs/@fqrn@' > /etc/cvmfs/example.domain.tld"
-          sudo bash -c "echo 'CVMFS_PUBLIC_KEY=/etc/cvmfs/keys/example.domain.tld.pub' > /etc/cvmfs/example.domain.tld"
-          sudo bash -c "echo 'CVMFS_HTTP_PROXY=DIRECT' > /etc/cvmfs/example.domain.tld"
-          # copy the stratum0 public key
-          scp iker@158.227.172.103:/etc/cvmfs/keys/example.domain.tld.pub /tmp
-          sudo cp /tmp/example.domain.tld.pub /etc/cvmfs/keys/
-          sudo cvmfs_config setup
-          fi
+            echo "Failed to mount CVMFS Stratum0." && exit 1
+          fis made up of one or more jobs that can run sequentially or in parallel
