@@ -29,10 +29,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cvmfs cvmfs-server
 
-      - name: Generate repository keys
-        run: |
-          sudo cvmfs_server generate_keys example.domain.tld
-
       - name: Initialize repository (mkfs)
         run: |
           sudo cvmfs_server mkfs example.domain.tld
