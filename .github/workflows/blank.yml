@@ -22,7 +22,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+      - name: Check whoami and sudo access
+        run: |
+          whoami
+          sudo -l
+          echo $SUDO_PASSWORD | sudo -S echo "sudo access test"
+          
       - name: Check if CVMFS Stratum0 is already mounted
         id: check-mounted
         run: |
