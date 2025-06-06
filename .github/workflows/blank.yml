@@ -30,45 +30,16 @@ jobs:
           sudo apt-get install -y cvmfs cvmfs-server
           wget https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
           sudo dpkg -i cvmfs-config-eessi_latest_all.deb
-          sudo apt-get -y install autofs fuse
+          sudo apt install -y apache2 cvmfs cvmfs-server
+          
 
-      #- name: Initialize repository (mkfs)
-      #  run: |
-      #    sudo systemctl stop autofs
-      #    sudo cvmfs_server mkfs example.domain.tld
-      #    sudo systemctl start autofs
+      - name: Initialize repository (mkfs)
+        run: |
+          sudo systemctl stop autofs
+          sudo systemctl disable autofs
+          sudo cvmfs_server mkfs example.domain.tld
+          sudo systemctl enable apache2
+          sudo systemctl start apache2
 
-      - name: Configure repository file
-        run: |
-          REPO_CONF="/etc/cvmfs/repositories.d/example.domain.tld/server.conf"
-          sudo bash -c "cat > $REPO_CONF <<EOF
-          CVMFS_STRATUM0=http://localhost/cvmfs/example.domain.tld
-          CVMFS_SERVER_URL=http://localhost/cvmfs/@fqrn@
-          CVMFS_KEYS_DIR=/etc/cvmfs/keys
-          CVMFS_REPO_NAME=example.domain.tld
-          EOF"
 
-      - name: Create storage directory
-        run: |
-          sudo mkdir -p /cvmfs/example.domain.tld
-          sudo chown -R $(whoami):$(whoami) /cvmfs/example.domain.tld
-      - name: Generate keys
-        run: |
-          sudo mkdir -p /etc/cvmfs/keys/example.domain.tld
-          sudo openssl genrsa -out /etc/cvmfs/keys/example.domain.tld.masterkey 4096
-          sudo openssl rsa -in /etc/cvmfs/keys/example.domain.tld.masterkey -pubout -out /etc/cvmfs/keys/example.domain.tld.pub
-          sudo chown root:root /etc/cvmfs/keys/example.domain.tld.*
 
-      - name: Publish initial repository
-        run: |
-          sudo cvmfs_server publish example.domain.tld
-
-      - name: Start and enable CVMFS server service
-        run: |
-          sudo systemctl start cvmfs-server
-          sudo systemctl enable cvmfs-server
-
-      - name: Mount repository (for testing)
-        run: |
-          sudo mkdir -p /cvmfs/example.domain.tld
-          sudo mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld
