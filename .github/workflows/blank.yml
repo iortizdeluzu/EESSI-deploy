@@ -53,7 +53,7 @@ jobs:
 
       - name: Create CVMFS Stratum 0 repo
         run: |
-          echo "$SUDO_PASSWORD" | sudo -S cvmfs_server mkfs example.domain.tld
+          echo "$SUDO_PASSWORD" | sudo -S bash -c 'root "" | sudo -S cvmfs_server mkfs example.domain.tld'
 
 
 
