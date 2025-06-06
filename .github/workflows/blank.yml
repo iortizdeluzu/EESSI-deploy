@@ -17,6 +17,8 @@ on:
 jobs:
   setup-stratum0:
     runs-on: local
+    env:
+      SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,22 +38,22 @@ jobs:
         if: steps.check-mounted.outputs.mounted == 'false'
         run: |
           # Install prerequisites
-          sudo apt-get install -y wget lsb-release
+          echo "$SUDO_PASSWORD" | sudo apt-get install -y wget lsb-release
           wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb
-          sudo dpkg -i cvmfs-release-latest_all.deb
-          sudo apt-get install -y cvmfs
+          echo "$SUDO_PASSWORD" | sudo dpkg -i cvmfs-release-latest_all.deb
+          echo "$SUDO_PASSWORD" | sudo apt-get install -y cvmfs
           wget https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
-          sudo dpkg -i cvmfs-config-eessi_latest_all.deb
+           echo "$SUDO_PASSWORD" |sudo dpkg -i cvmfs-config-eessi_latest_all.deb
 
           # Install CVMFS and server components
-          sudo apt-get install -y apache2 cvmfs cvmfs-server
+          echo "$SUDO_PASSWORD" | sudo apt-get install -y apache2 cvmfs cvmfs-server
 
           # Configure the Stratum0 repository
-          sudo cvmfs_server mkfs example.domain.tld <<EOF
+          echo "$SUDO_PASSWORD" | sudo cvmfs_server mkfs example.domain.tld <<EOF
 
           # Enable and start Apache
-          sudo systemctl enable apache2
-          sudo systemctl start apache2
+          echo "$SUDO_PASSWORD" | sudo systemctl enable apache2
+          echo "$SUDO_PASSWORD" | sudo systemctl start apache2
 
       - name: Final mount check
         run: |
