@@ -36,14 +36,12 @@ jobs:
         if: steps.check-mounted.outputs.mounted == 'false'
         run: |
           # Install prerequisites
-          sudo apt-get update
-          sudo apt-get install -y wget lsb-release gnupg
-
-          # Install CVMFS release package
-          wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
-          sudo alien --scripts cvmfs-release-latest.noarch.rpm  # convert RPM to DEB
-          sudo dpkg -i cvmfs-release-latest.noarch.deb || true
-          sudo apt-get update
+          sudo apt-get install -y wget lsb-release
+          wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb
+          sudo dpkg -i cvmfs-release-latest_all.deb
+          sudo apt-get install -y cvmfs
+          wget https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+          sudo dpkg -i cvmfs-config-eessi_latest_all.deb
 
           # Install CVMFS and server components
           sudo apt-get install -y apache2 cvmfs cvmfs-server
