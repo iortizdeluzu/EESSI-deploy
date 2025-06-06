@@ -35,11 +35,12 @@ jobs:
 
       - name: Initialize repository (mkfs)
         run: |
-          sudo systemctl stop autofs
-          sudo systemctl disable autofs
-          sudo cvmfs_server mkfs example.domain.tld
-          sudo systemctl enable apache2
-          sudo systemctl start apache2
+          sudo su
+          systemctl stop autofs
+          systemctl disable autofs
+          cvmfs_server mkfs example.domain.tld
+          systemctl enable apache2
+          systemctl start apache2
 
 
 
