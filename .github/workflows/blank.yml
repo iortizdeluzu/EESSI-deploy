@@ -61,7 +61,7 @@ jobs:
           echo "$SUDO_PASSWORD" | sudo systemctl enable apache2
           echo "$SUDO_PASSWORD" | sudo systemctl start apache2
 
-       - name: Final mount check
+      - name: Final mount check
           run: |
             sudo cvmfs_config setup
             sudo cvmfs_config reload
