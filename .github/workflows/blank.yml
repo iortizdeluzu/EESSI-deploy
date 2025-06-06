@@ -23,6 +23,8 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
+          curl https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cvmfs-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/cvmfs-archive-keyring.gpg] https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/ubuntu jammy main" | sudo tee /etc/apt/sources.list.d/cvmfs.list
           sudo apt-get install -y cvmfs cvmfs-server
 
       - name: Generate repository keys
