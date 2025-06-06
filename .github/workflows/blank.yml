@@ -31,6 +31,12 @@ jobs:
 
       - name: Initialize repository (mkfs)
         run: |
+          sudo mkdir -p /etc/cvmfs/keys/example.domain.tld
+          cd /etc/cvmfs/keys/example.domain.tld
+          sudo openssl genrsa -out /etc/cvmfs/keys/example.domain.tld.masterkey 4096
+          sudo openssl rsa -in /etc/cvmfs/keys/example.domain.tld.masterkey -pubout -out /etc/cvmfs/keys/example.domain.tld.pub
+          sudo chown root:root /etc/cvmfs/keys/example.domain.tld.masterkey
+          sudo chown root:root /etc/cvmfs/keys/example.domain.tld.pub
           sudo systemctl stop autofs
           sudo cvmfs_server mkfs example.domain.tld
           sudo systemctl start autofs
@@ -41,14 +47,14 @@ jobs:
           sudo bash -c "cat > $REPO_CONF <<EOF
           CVMFS_SERVER_REPOSITORY=example.domain.tld
           CVMFS_SERVER_STRATUM=0
-          CVMFS_SERVER_STORAGE=/srv/cvmfs/example.domain.tld
+          CVMFS_SERVER_STORAGE=/cvmfs/example.domain.tld
           CVMFS_SERVER_KEYS=/etc/cvmfs/keys/example.domain.tld
           EOF"
 
       - name: Create storage directory
         run: |
-          sudo mkdir -p /srv/cvmfs/example.domain.tld
-          sudo chown -R $(whoami):$(whoami) /srv/cvmfs/example.domain.tld
+          sudo mkdir -p /cvmfs/example.domain.tld
+          sudo chown -R $(whoami):$(whoami) /cvmfs/example.domain.tld
 
       - name: Publish initial repository
         run: |
