@@ -30,7 +30,7 @@ jobs:
           sudo apt-get install -y cvmfs cvmfs-server
           wget https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
           sudo dpkg -i cvmfs-config-eessi_latest_all.deb
-          sudo apt install autofs fuse
+          sudo apt-get -y install autofs fuse
 
       #- name: Initialize repository (mkfs)
       #  run: |
