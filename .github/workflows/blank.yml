@@ -31,7 +31,9 @@ jobs:
 
       - name: Initialize repository (mkfs)
         run: |
+          sudo systemctl stop autofs
           sudo cvmfs_server mkfs example.domain.tld
+          sudo systemctl start autofs
 
       - name: Configure repository file
         run: |
