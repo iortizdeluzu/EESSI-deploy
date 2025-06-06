@@ -33,12 +33,6 @@ jobs:
 
       - name: Initialize repository (mkfs)
         run: |
-          sudo mkdir -p /etc/cvmfs/keys/example.domain.tld
-          cd /etc/cvmfs/keys/example.domain.tld
-          sudo openssl genrsa -out /etc/cvmfs/keys/example.domain.tld.masterkey 4096
-          sudo openssl rsa -in /etc/cvmfs/keys/example.domain.tld.masterkey -pubout -out /etc/cvmfs/keys/example.domain.tld.pub
-          sudo chown root:root /etc/cvmfs/keys/example.domain.tld.masterkey
-          sudo chown root:root /etc/cvmfs/keys/example.domain.tld.pub
           sudo systemctl stop autofs
           sudo cvmfs_server mkfs example.domain.tld
           sudo systemctl start autofs
