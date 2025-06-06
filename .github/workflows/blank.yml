@@ -63,6 +63,7 @@ jobs:
 
       - name: Final mount check
         run: |
+          export CVMFS_HTTP_PROXY=DIRECT
           sudo cvmfs_config setup
           sudo cvmfs_config reload
           sudo mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld || true
