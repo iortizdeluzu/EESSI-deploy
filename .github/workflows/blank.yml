@@ -62,13 +62,13 @@ jobs:
           echo "$SUDO_PASSWORD" | sudo systemctl start apache2
 
       - name: Final mount check
-          run: |
-            sudo cvmfs_config setup
-            sudo cvmfs_config reload
-            sudo mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld || true
+        run: |
+          sudo cvmfs_config setup
+          sudo cvmfs_config reload
+          sudo mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld || true
 
-            if mountpoint -q /cvmfs/example.domain.tld; then
-              echo "✅ CVMFS Stratum0 is mounted."
-            else
-              echo "❌ Failed to mount CVMFS Stratum0." && exit 1
-            fi
+          if mountpoint -q /cvmfs/example.domain.tld; then
+            echo "✅ CVMFS Stratum0 is mounted."
+          else
+            echo "❌ Failed to mount CVMFS Stratum0." && exit 1
+          fi
