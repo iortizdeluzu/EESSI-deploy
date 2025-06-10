@@ -1,60 +1,28 @@
-# This is a basic workflow to help you get started with Actions
+name: Build and Push Ubuntu Container
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual triggering
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run ijobs:
 jobs:
-  setup-stratum0:
+  build-and-push:
     runs-on: local
-    env:
-      SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
+    permissions:
+      contents: read
+      packages: write  # Required for GHCR push
+
     steps:
-      - name: Install dependencies
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Ubuntu container
         run: |
-          sudo apt-get install lsb-release
-          wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb
-          sudo dpkg -i cvmfs-release-latest_all.deb
-          rm -f cvmfs-release-latest_all.deb
-          sudo apt-get update
-          sudo apt-get install -y cvmfs cvmfs-server
-          wget https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
-          sudo dpkg -i cvmfs-config-eessi_latest_all.deb
-          sudo apt install -y apache2 cvmfs cvmfs-server
-          
+          cd ~/eessi/actions-runner
+          docker build -t eessi-ubuntu -f Dockerfile .
+          docker save eessi-ubuntu -o eessi-ubuntu.tar
 
-      - name: Fully clean CVMFS repo
+      - name: Verify container
         run: |
-          echo "$SUDO_PASSWORD" | sudo -S systemctl stop autofs
-          echo "$SUDO_PASSWORD" | sudo -S cvmfs_server rmfs example.domain.tld || true
-          echo "$SUDO_PASSWORD" | sudo -S rm -rf /etc/cvmfs/repositories.d/example.domain.tld
-          echo "$SUDO_PASSWORD" | sudo -S rm -rf /var/spool/cvmfs/example.domain.tld
-
-      - name: Creating Keys
-        run: |
-          mkdir -p /etc/cvmfs/keys/example.domain.tld
-          echo "$SUDO_PASSWORD" | sudo -S openssl genrsa -out /etc/cvmfs/keys/example.domain.tld.key 4096
-          echo "$SUDO_PASSWORD" | sudo -S openssl rsa -in /etc/cvmfs/keys/example.domain.tld.key -pubout -out /etc/cvmfs/keys/example.domain.tld.pub
-          echo "$SUDO_PASSWORD" | sudo -S openssl req -new -x509 -days 3650 -key /etc/cvmfs/keys/example.domain.tld.key -out /etc/cvmfs/keys/example.domain.tld.crt -subj "/CN=example.domain.tld"
-          echo "$SUDO_PASSWORD" | sudo -S chown root:root /etc/cvmfs/keys/example.domain.tld.*
-          echo "$SUDO_PASSWORD" | sudo -S chmod 600 /etc/cvmfs/keys/example.domain.tld.key
-          echo "$SUDO_PASSWORD" | sudo -S chmod 644 /etc/cvmfs/keys/example.domain.tld.pub
-          echo "$SUDO_PASSWORD" | sudo -S chmod 644 /etc/cvmfs/keys/example.domain.tld.crt
-
-      - name: Create CVMFS Stratum 0 repo
-        run: |
-          echo "$SUDO_PASSWORD" | sudo -S bash -c 'yes "" | cvmfs_server mkfs example.domain.tld'
-
-
-
-
+          docker load -i ~/eessi/actions-runner/eessi-ubuntu.tar
+          docker run --rm eessi-ubuntu lsb_release -a
