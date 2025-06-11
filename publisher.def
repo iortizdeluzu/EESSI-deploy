@@ -1,27 +1,28 @@
-name: Build Apptainer Container
+Bootstrap: docker
+From: rockylinux:8
 
-on:
-  push:
-    paths:
-      - 'apptainer.def'
-      - '.github/workflows/build-container.yml'
-  workflow_dispatch:
+%post
+    # Instalar dependencias
+    dnf -y install epel-release
+    dnf -y install cvmfs cvmfs-config-default
 
-jobs:
-  build-container:
-    runs-on: hyperion
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    # Crear directorios necesarios
+    mkdir -p /etc/cvmfs/keys
+    mkdir -p /cvmfs/example.domain.tld
 
-      - name: Load Apptainer dependencies
-        run: |
-          module load Apptainer
+    # Configuración básica de CVMFS
+    echo "CVMFS_REPOSITORIES=example.domain.tld" > /etc/cvmfs/default.local
+    echo "CVMFS_SERVER_URL=http://localhost/cvmfs/@fqrn@" >> /etc/cvmfs/default.local
+    echo "CVMFS_KEYS_DIR=/etc/cvmfs/keys" >> /etc/cvmfs/default.local
+    echo "CVMFS_PUBLIC_KEY=/etc/cvmfs/keys/example.domain.tld.pub" >> /etc/cvmfs/default.local
 
-      - name: Create CVMFS public key file
-        run: |
-          echo "${{ secrets.stratum0 }}" > example.domain.tld.pub
+    # Inicializar CVMFS
+    cvmfs_config setup
 
-      - name: Build Apptainer container
-        run: |
-          apptainer build example-cvmfs.sif apptainer.def
+%files
+example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
+
+%runscript
+    echo "Contenedor CVMFS listo. Montando repositorio..."
+    cvmfs2 -o config=/etc/cvmfs/default.local example.domain.tld /cvmfs/example.domain.tld
+    exec bash
