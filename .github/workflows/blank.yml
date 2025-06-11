@@ -32,7 +32,7 @@ jobs:
         run: |
           cd /home/iker/eessi/container
           # Run container to initialize repository
-          sudo apptainer run --writable-tmpfs cvmfs-stratum0.sif <<EOF
+          sudo apptainer run --writable-tmpfs ubuntu.sif <<EOF
             cvmfs_server mkfs software.dipc.org
             cvmfs_server check software.dipc.org
           EOF
