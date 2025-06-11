@@ -2,10 +2,12 @@ name: Build Apptainer Container
 
 on:
   push:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual triggering
     paths:
       - 'apptainer.def'
       - '.github/workflows/build-container.yml'
-  workflow_dispatch:
+
 
 jobs:
   build-container:
