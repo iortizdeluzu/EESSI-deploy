@@ -8,6 +8,8 @@ From: ubuntu:22.04
         gnupg \
         lsb-release \
         apache2 \
+        httpd \
+        net-tools \
         autofs
 
     # Add CVMFS repository
