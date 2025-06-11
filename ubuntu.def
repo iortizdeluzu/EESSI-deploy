@@ -24,7 +24,8 @@ From: ubuntu:22.04
     a2enmod cgid
     a2enmod proxy
     a2enmod proxy_http
-    systemctl enable apache2
+    ln -s /usr/sbin/a2enmod /usr/sbin/a2dismod  # Workaround for missing systemctl
+    #systemctl enable apache2    ## Systemctl is not available in the container
 
     # Create basic CVMFS repository structure
     mkdir -p /etc/cvmfs/keys/dipc.org
