@@ -18,6 +18,10 @@ jobs:
 
       - name: Build Ubuntu container
         run: |
+          # Create build directory
+          mkdir -p /home/iker/eessi/container
+          cd /home/iker/eessi/container
+          
           # Copy the definition file from repository
           cp $GITHUB_WORKSPACE/ubuntu.def .
           
