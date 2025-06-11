@@ -1,0 +1,27 @@
+name: Build Apptainer Container
+
+on:
+  push:
+    paths:
+      - 'apptainer.def'
+      - '.github/workflows/build-container.yml'
+  workflow_dispatch:
+
+jobs:
+  build-container:
+    runs-on: hyperion
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Load Apptainer dependencies
+        run: |
+          module load Apptainer
+
+      - name: Create CVMFS public key file
+        run: |
+          echo "${{ secrets.stratum0 }}" > example.domain.tld.pub
+
+      - name: Build Apptainer container
+        run: |
+          apptainer build example-cvmfs.sif apptainer.def
