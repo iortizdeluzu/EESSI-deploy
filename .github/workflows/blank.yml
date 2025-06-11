@@ -18,8 +18,7 @@ jobs:
 
       - name: Build Ubuntu container
         run: |
-          mkdir -p ~/eessi/actions-runner
-          cd ~/eessi/actions-runner
+          cd /home/iker/eessi
           echo "Bootstrap: docker\nFrom: ubuntu:22.04\n\n%post\n    apt-get update\n    apt-get install -y curl wget git build-essential\n" > eessi-ubuntu.def
           sudo apptainer build eessi-ubuntu.sif eessi-ubuntu.def
 
@@ -27,4 +26,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: eessi-ubuntu-container
-          path: ~/eessi/actions-runner/eessi-ubuntu.sif
+          path: /home/iker/eessi/eessi-ubuntu.sif
