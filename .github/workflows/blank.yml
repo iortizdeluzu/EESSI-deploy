@@ -1,38 +1,27 @@
-name: Build and Push Ubuntu Container
+name: Build Apptainer Container
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:  # Allow manual triggering
+    paths:
+      - 'apptainer.def'
+      - '.github/workflows/build-container.yml'
+  workflow_dispatch:
 
 jobs:
-  build-and-push:
-    runs-on: local
-    permissions:
-      contents: read
-      packages: write  # Required for GHCR push
-
+  build-container:
+    runs-on: hyperion
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build Ubuntu container
+      - name: Load Apptainer dependencies
         run: |
-          # Create build directory
-          mkdir -p /home/iker/eessi/container
-          cd /home/iker/eessi/container
-          
-          # Copy the definition file from repository
-          cp $GITHUB_WORKSPACE/ubuntu.def .
-          
-          # Build the container
-          sudo apptainer build ubuntu.sif ubuntu.def
+          module load Apptainer
 
-      - name: Initialize CVMFS repository
+      - name: Create CVMFS public key file
         run: |
-          cd /home/iker/eessi/container
-          # Run container to initialize repository
-          sudo apptainer run --writable-tmpfs ubuntu.sif <<EOF
-            cvmfs_server mkfs software.dipc.org
-            cvmfs_server check software.dipc.org
-          EOF
+          echo "${{ secrets.stratum0 }}" > example.domain.tld.pub
+
+      - name: Build Apptainer container
+        run: |
+          apptainer build example-cvmfs.sif apptainer.def
