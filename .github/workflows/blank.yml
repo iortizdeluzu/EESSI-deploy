@@ -14,14 +14,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Load Apptainer dependencies
-        run: |
-          module load Apptainer
-
       - name: Create CVMFS public key file
         run: |
           echo "${{ secrets.stratum0 }}" > example.domain.tld.pub
 
       - name: Build Apptainer container
         run: |
+          module load Apptainer
           apptainer build example-cvmfs.sif apptainer.def
