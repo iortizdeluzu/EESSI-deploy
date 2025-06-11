@@ -6,7 +6,7 @@ From: rockylinux:8
     dnf -y install epel-release curl
     # Actualizar e instalar CVMFS
     dnf clean all
-    dnf -y install cvmfs cvmfs-config-default
+    sudo dnf install -y cvmfs cvmfs-config-default
 
     # Crear directorios necesarios
     mkdir -p /etc/cvmfs/keys
