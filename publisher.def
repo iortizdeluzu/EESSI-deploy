@@ -12,16 +12,20 @@ From: rockylinux:8
 
     # Crear directorios necesarios
     mkdir -p /etc/cvmfs/keys
+    mkdir -p /etc/cvmfs/config.d
     mkdir -p /cvmfs/example.domain.tld
 
-    # Configuración básica de CVMFS
+    # Crear configuración global
     echo "CVMFS_REPOSITORIES=example.domain.tld" > /etc/cvmfs/default.local
-    echo "CVMFS_SERVER_URL=http://localhost/cvmfs/@fqrn@" >> /etc/cvmfs/default.local
-    echo "CVMFS_KEYS_DIR=/etc/cvmfs/keys" >> /etc/cvmfs/default.local
-    echo "CVMFS_PUBLIC_KEY=/etc/cvmfs/keys/example.domain.tld.pub" >> /etc/cvmfs/default.local
+
+    # Crear configuración específica del repositorio
+    echo "CVMFS_SERVER_URL=http://158.227.172.103/cvmfs/@fqrn@" > /etc/cvmfs/config.d/example.domain.tld.conf
+    echo "CVMFS_PUBLIC_KEY=/etc/cvmfs/keys/example.domain.tld.pub" >> /etc/cvmfs/config.d/example.domain.tld.conf
+    echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/config.d/example.domain.tld.conf
 
     # Inicializar CVMFS
     cvmfs_config setup
+    cvmfs_config reload example.domain.tld
 
 %files
 example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
