@@ -18,6 +18,8 @@ jobs:
 
       - name: Build Ubuntu container
         run: |
-          cd /home/iker/eessi
-          echo "Bootstrap: docker\nFrom: ubuntu:22.04\n\n%post\n    apt-get update\n    apt-get install -y curl wget git build-essential\n" > eessi-ubuntu.def
-          sudo apptainer build eessi-ubuntu.sif eessi-ubuntu.def
+          # Copy the definition file from repository
+          cp $GITHUB_WORKSPACE/ubuntu.def .
+          
+          # Build the container
+          sudo apptainer build eessi-ubuntu.sif ubuntu.def
