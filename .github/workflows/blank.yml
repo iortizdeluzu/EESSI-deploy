@@ -23,4 +23,4 @@ jobs:
       - name: Build Apptainer container
         run: |
           module load Apptainer
-          apptainer build example-cvmfs.sif apptainer.def
+          apptainer build example-cvmfs.sif publisher.def
