@@ -5,6 +5,7 @@ From: rockylinux:8
     # Instalar dependencias
     dnf -y install epel-release curl
     # Actualizar e instalar CVMFS
+    curl -o /etc/yum.repos.d/cernvm.repo https://cvmrepo.web.cern.ch/cvmrepo/yum/cernvm.repo
     dnf clean all
     sudo dnf install -y cvmfs cvmfs-config-default
 
