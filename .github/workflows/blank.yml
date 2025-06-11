@@ -27,54 +27,6 @@ jobs:
           
           # Build the container
           #sudo apptainer build ubuntu.sif ubuntu.def
-          cat <<EOF > cvmfs-stratum0.def
-Bootstrap: docker
-From: ubuntu:22.04
-
-%files
-    $GITHUB_WORKSPACE/ubuntu.def /opt/
-
-%post
-    # Install base dependencies
-    apt-get update && apt-get install -y \
-        wget \
-        gnupg \
-        lsb-release \
-        apache2 \
-        autofs
-
-    # Add CVMFS repository
-    wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb
-    dpkg -i cvmfs-release-latest_all.deb
-    rm -f cvmfs-release-latest_all.deb
-    apt-get update
-
-    # Install CVMFS server packages
-    apt-get install -y cvmfs-server
-
-    # Configure Apache for CVMFS
-    a2enmod headers
-    a2enmod cgid
-    a2enmod proxy
-    a2enmod proxy_http
-    systemctl enable apache2
-
-    # Create basic CVMFS repository structure
-    mkdir -p /etc/cvmfs/keys/dipc.org
-    mkdir -p /var/spool/cvmfs
-
-%environment
-    export CVMFS_REPOSITORY=software.dipc.org
-    export CVMFS_HTTP_PROXY="http://localhost:3128"
-
-%runscript
-    echo "Starting CVMFS Stratum 0 server for software.dipc.org"
-    service apache2 start
-    cvmfs_server list
-EOF
-
-          # Build the container
-          sudo apptainer build cvmfs-stratum0.sif cvmfs-stratum0.def
 
       - name: Initialize CVMFS repository
         run: |
