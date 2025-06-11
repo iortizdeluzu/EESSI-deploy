@@ -21,9 +21,3 @@ jobs:
           cd /home/iker/eessi
           echo "Bootstrap: docker\nFrom: ubuntu:22.04\n\n%post\n    apt-get update\n    apt-get install -y curl wget git build-essential\n" > eessi-ubuntu.def
           sudo apptainer build eessi-ubuntu.sif eessi-ubuntu.def
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: eessi-ubuntu-container
-          path: /home/iker/eessi/eessi-ubuntu.sif
