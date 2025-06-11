@@ -10,6 +10,14 @@ From: ubuntu:22.04
         apache2 \
         net-tools \
         autofs
+    # Create required directories that Apache needs
+    mkdir -p /var/run/apache2
+    mkdir -p /var/lock/apache2
+    chmod 755 /var/run/apache2
+    chmod 755 /var/lock/apache2
+    # Configure Apache to use alternative run directory
+    echo "export APACHE_RUN_DIR=/tmp/apache2" >> /etc/apache2/envvars
+    echo "export APACHE_LOCK_DIR=/tmp/apache2" >> /etc/apache2/envvars
 
     # Add CVMFS repository
     wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb
@@ -39,5 +47,14 @@ From: ubuntu:22.04
 
 %runscript
     echo "Starting CVMFS Stratum 0 server for software.dipc.org"
-    service apache2 start
+    # Create temporary directories on startup
+    mkdir -p /tmp/apache2
+    chown www-data:www-data /tmp/apache2
+    chmod 755 /tmp/apache2
+    
+    # Start Apache
+    /usr/sbin/apache2ctl -D FOREGROUND &
+    sleep 2  # Give Apache time to start
+    
+    # List CVMFS repositories
     cvmfs_server list
