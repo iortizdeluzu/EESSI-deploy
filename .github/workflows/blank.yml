@@ -23,10 +23,10 @@ jobs:
           cd /home/iker/eessi/container
           
           # Copy the definition file from repository
-          #cp $GITHUB_WORKSPACE/ubuntu.def .
+          cp $GITHUB_WORKSPACE/ubuntu.def .
           
           # Build the container
-          #sudo apptainer build ubuntu.sif ubuntu.def
+          sudo apptainer build ubuntu.sif ubuntu.def
 
       - name: Initialize CVMFS repository
         run: |
