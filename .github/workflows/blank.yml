@@ -18,11 +18,13 @@ jobs:
 
       - name: Build Ubuntu container
         run: |
+          mkdir -p ~/eessi/actions-runner
           cd ~/eessi/actions-runner
-          docker build -t eessi-ubuntu -f Dockerfile .
-          docker save eessi-ubuntu -o eessi-ubuntu.tar
+          echo "Bootstrap: docker\nFrom: ubuntu:22.04\n\n%post\n    apt-get update\n    apt-get install -y curl wget git build-essential\n" > eessi-ubuntu.def
+          sudo apptainer build eessi-ubuntu.sif eessi-ubuntu.def
 
-      - name: Verify container
-        run: |
-          docker load -i ~/eessi/actions-runner/eessi-ubuntu.tar
-          docker run --rm eessi-ubuntu lsb_release -a
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: eessi-ubuntu-container
+          path: ~/eessi/actions-runner/eessi-ubuntu.sif
