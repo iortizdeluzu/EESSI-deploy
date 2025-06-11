@@ -1,9 +1,6 @@
 Bootstrap: docker
 From: ubuntu:22.04
 
-%files
-    $GITHUB_WORKSPACE/ubuntu.def /opt/
-
 %post
     # Install base dependencies
     apt-get update && apt-get install -y \
