@@ -2,7 +2,7 @@ name: Build Apptainer Container
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, test_gh_action_carlos ]
   workflow_dispatch:  # Allow manual triggering
     paths:
       - 'apptainer.def'
@@ -28,4 +28,4 @@ jobs:
       - name: Check if CVMFS mount is available
         run: |
           module load Apptainer
-          apptainer exec example-cvmfs.sif ls /cvmfs/example.domain.tld || echo "Mount failed or not accessible"
+          apptainer --fusemount"container:cvmfs2 example.domain.tld /cvmfs/example.domain.tld" exec example-cvmfs.sif ls /cvmfs/example.domain.tld || echo "Mount failed or not accessible"
