@@ -5,11 +5,9 @@ From: rockylinux:8
     dnf install -y epel-release
     dnf install -y fakeroot
     # Instalar dependencias
-    #dnf -y install epel-release curl
     # Actualizar e instalar CVMFS
-    FAKEROOTDONTTRYCHOWN=1 fakeroot yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
-    #curl -o /etc/yum.repos.d/cernvm.repo https://cvmrepo.web.cern.ch/cvmrepo/yum/cernvm.repo
-    FAKEROOTDONTTRYCHOWN=1 fakeroot yum install -y cvmfs
+    yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
+    FAKEROOTDONTTRYCHOWN=1 fakeroot bash -c 'yum install -y cvmfs'
 
     # Crear directorios necesarios
     mkdir -p /etc/cvmfs/keys
@@ -25,8 +23,8 @@ From: rockylinux:8
     echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/config.d/example.domain.tld.conf
 
     # Inicializar CVMFS
-    FAKEROOTDONTTRYCHOWN=1 fakeroot cvmfs_config setup
-    FAKEROOTDONTTRYCHOWN=1 fakeroot cvmfs_config reload example.domain.tld
+    FAKEROOTDONTTRYCHOWN=1 fakeroot bash -c 'cvmfs_config setup'
+    FAKEROOTDONTTRYCHOWN=1 fakeroot bash -c 'cvmfs_config reload example.domain.tld'
 
 %files
 example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
