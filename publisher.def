@@ -25,7 +25,7 @@ From: rockylinux:8
 
     # Inicializar CVMFS
     cvmfs_config setup
-    #cvmfs_config reload example.domain.tld
+    cvmfs_config reload example.domain.tld
 
 %files
 example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
