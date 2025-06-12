@@ -32,5 +32,5 @@ example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
 
 %runscript
     echo "Contenedor CVMFS listo. Montando repositorio..."
-    cvmfs2 -o config=/etc/cvmfs/default.local example.domain.tld /cvmfs/example.domain.tld
+    #cvmfs2 -o config=/etc/cvmfs/default.local example.domain.tld /cvmfs/example.domain.tld
     exec bash

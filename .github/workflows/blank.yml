@@ -28,4 +28,4 @@ jobs:
       - name: Check if CVMFS mount is available
         run: |
           module load Apptainer
-          apptainer --fusemount"container:cvmfs2 example.domain.tld /cvmfs/example.domain.tld" exec example-cvmfs.sif ls /cvmfs/example.domain.tld || echo "Mount failed or not accessible"
+          apptainer --fusemount"container:cvmfs2 -o config=/etc/cvmfs/default.local example.domain.tld /cvmfs/example.domain.tld" exec example-cvmfs.sif ls /cvmfs/example.domain.tld || echo "Mount failed or not accessible"
