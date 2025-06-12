@@ -2,6 +2,7 @@ Bootstrap: docker
 From: rockylinux:8
 
 %post
+    dnf install -y epel-release
     dnf install -y fakeroot
     # Instalar dependencias
     #dnf -y install epel-release curl
