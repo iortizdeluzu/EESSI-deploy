@@ -23,7 +23,7 @@ jobs:
       - name: Build Apptainer container
         run: |
           module load Apptainer
-          apptainer build --fakeroot example-cvmfs.sif publisher.def
+          apptainer build --fakeroot --sandbox example-cvmfs.sif publisher.def
           apptainer exec example-cvmfs.sif bash -c "cvmfs_config setup && cvmfs_config reload example.domain.tld"
       - name: Check if CVMFS mount is available
         run: |
