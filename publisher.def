@@ -3,7 +3,6 @@ From: rockylinux:8
 
 %post
     dnf install -y epel-release
-    dnf install -y fakeroot
     # Instalar dependencias
     # Actualizar e instalar CVMFS
     yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
