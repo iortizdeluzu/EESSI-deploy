@@ -20,12 +20,16 @@ jobs:
         run: |
           echo "${{ secrets.stratum0 }}" > example.domain.tld.pub
 
-      - name: Build Apptainer container
+      - name: Install Docker container
         run: |
-          module load Apptainer
-          apptainer build --fakeroot --sandbox example-cvmfs.sif publisher.def
-          apptainer exec example-cvmfs.sif bash -c "cvmfs_config setup && cvmfs_config reload example.domain.tld"
-      - name: Check if CVMFS mount is available
+          dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+          sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+      - name: Build Docker container
         run: |
-          module load Apptainer
-          apptainer exec example-cvmfs.sif ls /cvmfs/example.domain.tld || echo "Mount failed or not accessible"
+          docker build --tag hello .
+
+          
+      - name: Execute Docker container
+        run: |
+          docker run --rm hello
