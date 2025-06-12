@@ -24,7 +24,7 @@ jobs:
         run: |
           module load Apptainer
           apptainer build --ignore-fakeroot-command example-cvmfs.sif publisher.def
-          #apptainer exec example-cvmfs.sif bash -c "FAKEROOTDONTTRYCHOWN=1 fakeroot cvmfs_config setup && FAKEROOTDONTTRYCHOWN=1 fakeroot cvmfs_config reload example.domain.tld"
+          apptainer exec example-cvmfs.sif bash -c "cvmfs_config setup && cvmfs_config reload example.domain.tld"
       - name: Check if CVMFS mount is available
         run: |
           module load Apptainer
