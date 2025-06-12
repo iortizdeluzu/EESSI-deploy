@@ -7,7 +7,7 @@ From: rockylinux:8
     # Instalar dependencias
     # Actualizar e instalar CVMFS
     yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
-    FAKEROOTDONTTRYCHOWN=1 fakeroot bash -c 'yum install -y cvmfs'
+    dnf install -y cvmfs
 
     # Crear directorios necesarios
     mkdir -p /etc/cvmfs/keys
@@ -23,8 +23,8 @@ From: rockylinux:8
     echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/config.d/example.domain.tld.conf
 
     # Inicializar CVMFS
-    FAKEROOTDONTTRYCHOWN=1 fakeroot bash -c 'cvmfs_config setup'
-    FAKEROOTDONTTRYCHOWN=1 fakeroot bash -c 'cvmfs_config reload example.domain.tld'
+    cvmfs_config setup
+    cvmfs_config reload example.domain.tld
 
 %files
 example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
