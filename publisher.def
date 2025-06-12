@@ -25,8 +25,8 @@ From: rockylinux:8
     echo "CVMFS_HTTP_PROXY=DIRECT" >> /etc/cvmfs/config.d/example.domain.tld.conf
 
     # Inicializar CVMFS
-    #cvmfs_config setup
-    #cvmfs_config reload example.domain.tld
+    FAKEROOTDONTTRYCHOWN=1 fakeroot cvmfs_config setup
+    FAKEROOTDONTTRYCHOWN=1 fakeroot cvmfs_config reload example.domain.tld
 
 %files
 example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
