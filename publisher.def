@@ -16,7 +16,7 @@ From: rockylinux:8
     mkdir -p /cvmfs/example.domain.tld
 
     # Crear configuración global
-    echo "CVMFS_REPOSITORIES=example.domain.tld" > /etc/cvmfs/default.local
+    #echo "CVMFS_REPOSITORIES=example.domain.tld" > /etc/cvmfs/default.local
 
     # Crear configuración específica del repositorio
     echo "CVMFS_SERVER_URL=http://158.227.172.103/cvmfs/@fqrn@" > /etc/cvmfs/config.d/example.domain.tld.conf
