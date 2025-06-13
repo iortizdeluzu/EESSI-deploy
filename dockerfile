@@ -15,8 +15,8 @@ RUN dnf -y install epel-release curl git && \
     dnf clean all
 
 # ---- install EasyBuild ---------------------------------------------------------
-git clone https://github.com/dilasgoi/sci-env
-cd sci-env/scripts/ && ./install.sh
+RUN git clone https://github.com/dilasgoi/sci-env \ 
+    cd sci-env/scripts/ && ./install.sh
 
 # ---- Create directories and configuration -----------------------------------
 RUN mkdir -p /etc/cvmfs/keys \
