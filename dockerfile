@@ -15,7 +15,7 @@ RUN dnf -y install epel-release curl git && \
     dnf clean all
 
 # ---- install EasyBuild ---------------------------------------------------------
-RUN git clone https://github.com/dilasgoi/sci-env \ 
+RUN git clone https://github.com/dilasgoi/sci-env && \ 
     cd sci-env/scripts/ && ./install.sh
 
 # ---- Create directories and configuration -----------------------------------
