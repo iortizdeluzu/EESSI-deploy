@@ -14,8 +14,8 @@ RUN dnf -y install epel-release curl git && \
     dnf -y install cvmfs cvmfs-config-default && \
     dnf clean all
 
-# ---- install EasyBuild ---------------------------------------------------------
-RUN git clone https://github.com/dilasgoi/sci-env && \ 
+# ---- Install EasyBuild ---------------------------------------------------------
+RUN git clone https://github.com/dilasgoi/sci-env \ 
     #cd sci-env/scripts/ && ./install.sh
 
 # ---- Create directories and configuration -----------------------------------
