@@ -8,7 +8,7 @@ LABEL maintainer="iker.ortiz@dipc.com"
 ENV DEBIAN_FRONTEND=noninteractive
 
 # ---- Install EPEL, CVMFS repo, and CVMFS itself ------------------------------
-RUN dnf -y install epel-release curl git sudo wget && \
+RUN dnf -y install epel-release curl git sudo wget bzip2 && \
     yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm && \
     dnf clean all && \
     dnf -y install cvmfs cvmfs-config-default && \
