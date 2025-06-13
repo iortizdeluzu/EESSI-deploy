@@ -20,16 +20,11 @@ jobs:
         run: |
           echo "${{ secrets.stratum0 }}" > example.domain.tld.pub
 
-      - name: Install Docker container
-        run: |
-          sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
-          sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-
       - name: Build Docker container
         run: |
-          docker build --tag hello .
+          docker build -t cvmfs-rocky8 .
 
           
       - name: Execute Docker container
         run: |
-          docker run --rm hello
+          docker run --rm -it --cap-add SYS_ADMIN --device /dev/fuse cvmfs-rocky8
