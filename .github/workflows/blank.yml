@@ -22,7 +22,7 @@ jobs:
 
       - name: Build Docker container
         run: |
-          sudo docker build -t cvmfs-rocky8 .
+          docker build -t cvmfs-rocky8 .
 
           
       - name: Execute Docker container
