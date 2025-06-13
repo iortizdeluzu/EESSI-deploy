@@ -47,6 +47,8 @@ jobs:
           --device /dev/fuse \
           --security-opt apparmor:unconfined \
           --tmpfs /cvmfs:exec \
-           -e USER=scicomp \
+          -e USER=scicomp \ 
+          -e HOME=/home/scicomp \
+          -w /home/scicomp \
           cvmfs-rocky8 \
           bash -c "mkdir -p /cvmfs/example.domain.tld && mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld && ls /cvmfs/example.domain.tld && cd sci-env/scripts && ls && bash install.sh"
