@@ -25,6 +25,7 @@ RUN mkdir -p /etc/cvmfs/keys \
 # ---- Inicialize CVMFS --------------------------------------------------------
 #RUN cvmfs_config setup\
 #    cvmfs_config reload example.domain.tld
+RUN mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld
 
 # ---- Copy your public key ----------------------------------------------------
 COPY example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
