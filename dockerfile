@@ -23,8 +23,8 @@ RUN mkdir -p /etc/cvmfs/keys \
     echo "CVMFS_HTTP_PROXY=DIRECT"                                >> /etc/cvmfs/config.d/example.domain.tld.conf
 
 # ---- Inicialize CVMFS --------------------------------------------------------
-RUN cvmfs_config setup\
-    cvmfs_config reload example.domain.tld
+#RUN cvmfs_config setup\
+#    cvmfs_config reload example.domain.tld
 
 # ---- Copy your public key ----------------------------------------------------
 COPY example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
