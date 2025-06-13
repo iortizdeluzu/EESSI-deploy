@@ -36,5 +36,3 @@ COPY example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
 # ---- Default startup ---------------------------------------------------------
 # You need FUSE privileges to mount; the CMD prints a hint, then drops to bash.
 CMD echo "CVMFS container ready. Run with --cap-add SYS_ADMIN --device /dev/fuse and then execute:\n  cvmfs2 -o config=/etc/cvmfs/default.local example.domain.tld /cvmfs/example.domain.tld" && exec mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld && /bin/bash
-
-https://github.com/dilasgoi/sci-env
