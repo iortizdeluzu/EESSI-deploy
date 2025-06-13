@@ -48,4 +48,4 @@ jobs:
           --security-opt apparmor:unconfined \
           --tmpfs /cvmfs:exec \
           cvmfs-rocky8 \
-          bash -c "mkdir -p /cvmfs/example.domain.tld && mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld && ls /cvmfs/example.domain.tld && cd sci-env/scripts && ./install"
+          bash -c "mkdir -p /cvmfs/example.domain.tld && mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld && ls /cvmfs/example.domain.tld && cd sci-env/scripts && ls && bash install.sh"
