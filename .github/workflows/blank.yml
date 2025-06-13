@@ -47,7 +47,7 @@ jobs:
           --device /dev/fuse \
           --security-opt apparmor:unconfined \
           --tmpfs /cvmfs:exec \
-          -e USER=scicomp \ 
+          -e USER=scicomp \
           -e HOME=/home/scicomp \
           -w /home/scicomp \
           cvmfs-rocky8 \
