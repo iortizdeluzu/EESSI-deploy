@@ -24,6 +24,9 @@ RUN useradd -m scicomp && echo "scicomp ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN git clone https://github.com/dilasgoi/sci-env  
 RUN chown -R scicomp:scicomp /sci-env
 #New addition so easybuild is installed in the container build
+ENV USER=scicomp
+ENV HOME=/home/scicomp
+WORKDIR /home/scicomp
 USER scicomp
 # Install EasyBuild during the build
 RUN cd /sci-env/scripts && bash install.sh
