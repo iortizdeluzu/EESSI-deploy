@@ -50,6 +50,6 @@ jobs:
           -e USER=scicomp \
           -e HOME=/home/scicomp \
           -w /home/scicomp \
-          --user scicomp \          
+          --user scicomp \
           cvmfs-rocky8 \
           bash -c "sudo chown -R scicomp:scicomp /sci-env && cd /sci-env/scripts && bash install.sh"
