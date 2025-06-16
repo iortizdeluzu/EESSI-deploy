@@ -20,6 +20,7 @@ RUN useradd -m scicomp
 
 # ---- Install EasyBuild ------------------------------------------------------
 RUN git clone https://github.com/dilasgoi/sci-env  
+RUN chown -R scicomp:scicomp /sci-env
     #cd sci-env/scripts/ && ./install.sh
 
 # ---- Create directories and configuration -----------------------------------
