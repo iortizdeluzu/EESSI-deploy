@@ -33,6 +33,12 @@ jobs:
           
       - name: Mount and list CVMFS repo inside container
         run: |
+          docker run --rm -it \
+            --privileged \
+            --device /dev/fuse \
+            --security-opt apparmor:unconfined \
+            cvmfs-rocky8 \
+            bash
 #          docker run --rm \
 #            --cap-add SYS_ADMIN \
 #            --device /dev/fuse \
@@ -41,12 +47,7 @@ jobs:
 #            --user ROOT \
 #            cvmfs-rocky8 \
 #            bash -c "mkdir -p /cvmfs/example.domain.tld && mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld && ls /cvmfs/example.domain.tld"
-          docker run --rm -it \
-            --privileged \
-            --device /dev/fuse \
-            --security-opt apparmor:unconfined \
-            cvmfs-rocky8 \
-            bash
+
 #      - name: Install EasyBuild
 #        run: | 
 #          docker run --rm \
