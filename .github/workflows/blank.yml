@@ -39,7 +39,7 @@ jobs:
             --device /dev/fuse \
             --security-opt apparmor:unconfined \
             --tmpfs /cvmfs:exec \
-            --user ROOT \
+            --user root \
             cvmfs-rocky8 \
             bash -c "mkdir -p /cvmfs/example.domain.tld && mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld && ls /cvmfs/example.domain.tld"
 
