@@ -16,12 +16,17 @@ RUN dnf clean all
 
 # ---- Add non-root user ------------------------------------------------------
 RUN useradd -m scicomp && echo "scicomp ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-#RUN useradd -m scicomp
+ENV USER=scicomp
+ENV HOME=/home/scicomp
+WORKDIR /home/scicomp
 
 # ---- Install EasyBuild ------------------------------------------------------
 RUN git clone https://github.com/dilasgoi/sci-env  
 RUN chown -R scicomp:scicomp /sci-env
-    #cd sci-env/scripts/ && ./install.sh
+#New addition so easybuild is installed in the container build
+USER scicomp
+# Install EasyBuild during the build
+RUN cd /sci-env/scripts && bash install.sh
 
 # ---- Create directories and configuration -----------------------------------
 RUN mkdir -p /etc/cvmfs/keys \
