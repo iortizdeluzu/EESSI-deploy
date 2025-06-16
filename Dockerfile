@@ -49,5 +49,3 @@ WORKDIR /home/scicomp
 USER scicomp
 # Install EasyBuild during the build
 RUN cd /sci-env/scripts && bash install.sh
-
-USER ROOT
