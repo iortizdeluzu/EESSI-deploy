@@ -52,4 +52,4 @@ jobs:
           -e HOME=/home/scicomp \
           -w /home/scicomp \
           cvmfs-rocky8 \
-          bash -c "mkdir -p /cvmfs/example.domain.tld && mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld && ls /cvmfs/example.domain.tld && sudo chown -R scicomp:scicomp sci-env && cd sci-env/scripts && bash install.sh"
+          bash -c "sudo chown -R scicomp:scicomp sci-env && cd sci-env/scripts && bash install.sh"
