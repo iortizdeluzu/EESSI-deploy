@@ -25,19 +25,15 @@ jobs:
           BUILDAH_ISOLATION: chroot   # <- key line
           BUILDAH_STORAGE_DRIVER: vfs # (drop if you prefer fuse‑overlayfs)
         run: |
-          #docker build -t cvmfs-rocky8 .
-          podman build -t cvmfs-rocky8 .
-
+          docker build -t cvmfs-rocky8 .
           
       - name: Execute Docker container
         run: |
-          #docker run --rm -i --cap-add SYS_ADMIN --device /dev/fuse --security-opt apparmor:unconfined cvmfs-rocky8
-          podman run --rm -i --cap-add SYS_ADMIN --device /dev/fuse --security-opt apparmor:unconfined cvmfs-rocky8
-
+          docker run --rm -i --cap-add SYS_ADMIN --device /dev/fuse --security-opt apparmor:unconfined cvmfs-rocky8
+          
       - name: Mount and list CVMFS repo inside container
         run: |
-          #docker run --rm \
-          podman run --rm \
+          docker run --rm \
             --cap-add SYS_ADMIN \
             --device /dev/fuse \
             --security-opt apparmor:unconfined \
@@ -47,8 +43,7 @@ jobs:
       
       - name: Install EasyBuild
         run: | 
-          #docker run --rm \
-          podman run --rm \
+          docker run --rm \
           --cap-add SYS_ADMIN \
           --device /dev/fuse \
           --security-opt apparmor:unconfined \
