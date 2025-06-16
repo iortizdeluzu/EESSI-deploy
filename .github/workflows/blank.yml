@@ -52,4 +52,4 @@ jobs:
           -w /home/scicomp \
           --user scicomp \
           cvmfs-rocky8 \
-          bash -c "sudo chown -R scicomp:scicomp /sci-env && cd /sci-env/scripts && bash install.sh"
+          bash -c "chown -R scicomp:scicomp /sci-env && cd /sci-env/scripts && bash install.sh"
