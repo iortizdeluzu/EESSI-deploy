@@ -26,7 +26,7 @@ jobs:
           BUILDAH_STORAGE_DRIVER: vfs # (drop if you prefer fuse‑overlayfs)
         run: |
           #docker build -t cvmfs-rocky8 .
-          podman --runtime crun build -t cvmfs-rocky8 .
+          podman build -t cvmfs-rocky8 .
 
           
       - name: Execute Docker container
