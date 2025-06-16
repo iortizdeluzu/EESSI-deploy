@@ -44,7 +44,6 @@ jobs:
       - name: Install EasyBuild
         run: | 
           docker run --rm \
-          --cap-add SYS_ADMIN \
           --device /dev/fuse \
           --security-opt apparmor:unconfined \
           --tmpfs /cvmfs:exec \
