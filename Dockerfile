@@ -16,6 +16,7 @@ RUN dnf clean all
 
 # ---- Add non-root user ------------------------------------------------------
 #RUN useradd -m scicomp && echo "scicomp ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN useradd -m scicomp
 
 # ---- Install EasyBuild ------------------------------------------------------
 RUN git clone https://github.com/dilasgoi/sci-env  
