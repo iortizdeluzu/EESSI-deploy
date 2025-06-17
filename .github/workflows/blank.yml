@@ -36,7 +36,7 @@ jobs:
             --device /dev/fuse \
             --security-opt apparmor:unconfined \
             --tmpfs /cvmfs:exec \
-            --user root \
+            --user $(id -u scicomp):$(id -g scicomp) \
             --mount type=bind,src=/scicomp/eessi-test,dst=/scicomp/eessi \
             gentoo-prefix-rocky8 \
             bash -c '/home/scicomp/install_gentoo_prefix.sh /scicomp/eessi'
