@@ -51,5 +51,5 @@ WORKDIR /home/scicomp
 #RUN cd /sci-env/scripts && bash install.sh
 
 # ---- Install archspec -----
-RUN dnf install python3.12
-RUN pip install archspec
+RUN dnf -y install python3.12
+RUN pip -y install archspec
