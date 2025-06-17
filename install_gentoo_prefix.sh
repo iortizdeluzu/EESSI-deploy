@@ -12,4 +12,5 @@ if [ -d "$REPO_PATH" ]; then
   echo "$REPO_PATH exists"
 else
   echo "$REPO_PATH does not exist"s
+  mkdir -p $REPO_PATH
 fi
