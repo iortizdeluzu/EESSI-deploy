@@ -33,9 +33,11 @@ RUN mkdir -p /etc/cvmfs/keys \
 #RUN cvmfs_config setup\
 #    cvmfs_config reload example.domain.tld
 
-# ---- Copy your public and private key ----------------------------------------------------
+# ---- Copy your public key ----------------------------------------------------
 COPY example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
+# ---- Copy your master key ----------------------------------------------------
 COPY example.domain.tld.masterkey /etc/cvmfs/keys/example.domain.tld.masterkey
+# ---- Copy your certificate key ----------------------------------------------------
 COPY example.domain.tld.crt /etc/cvmfs/keys/example.domain.tld.crt
 
 # ---- Default startup ---------------------------------------------------------
