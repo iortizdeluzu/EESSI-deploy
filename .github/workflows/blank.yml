@@ -67,4 +67,4 @@ jobs:
           -w /home/scicomp \
           --user scicomp \
           cvmfs-rocky8 \
-          bash -c "source /home/scicomp/.bashrc && module load EasyBuild && eb Go-1.22.1.eb -r && ml load Go && go --version"
+          bash -c "source /home/scicomp/.bashrc && module load EasyBuild && eb Go-1.22.1.eb -r && ml load Go && go version"
