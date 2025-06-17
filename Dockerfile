@@ -54,3 +54,5 @@ WORKDIR /home/scicomp
 RUN dnf -y install python3.12
 RUN dnf -y install python3.12-pip
 RUN pip3 install archspec
+WORKDIR /home/scicomp
+COPY install_gentoo_prefix.sh ./install_gentoo_prefix.sh

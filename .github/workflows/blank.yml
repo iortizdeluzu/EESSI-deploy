@@ -39,7 +39,7 @@ jobs:
             --user root \
             --mount type=bind,src=/scicomp/eessi-test,dst=/scicomp/eessi \
             gentoo-prefix-rocky8 \
-            bash -c 'export MICRO_ARCH=$(python3 -c "import archspec.cpu; print(str(archspec.cpu.host()))"); echo $(ls /scicomp/eessi/$MICRO_ARCH);'
+            bash /home/scicomp/install_gentoo_prefix.sh
 
 #      - name: Install EasyBuild
 #        run: | 
