@@ -15,4 +15,6 @@ else
   mkdir -p $REPO_PATH
 fi
 
-/home/scicomp/bootstrap_prefix.sh $REPO_PATH noninteractive
+wget https://gitweb.gentoo.org/repo/proj/prefix.git/plain/scripts/bootstrap-prefix.sh
+chmod +x ./bootstrap-prefix.sh
+./bootstrap_prefix.sh $REPO_PATH noninteractive
