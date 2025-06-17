@@ -37,8 +37,9 @@ jobs:
             --security-opt apparmor:unconfined \
             --tmpfs /cvmfs:exec \
             --user root \
+            --mount type=bind,src=/scicomp/eessi-test,dst=/scicomp/eessi \
             gentoo-prefix-rocky8 \
-            bash -c 'python3 -c "import archspec.cpu; print(str(archspec.cpu.host()))"'
+            bash -c 'export MICRO_ARCH=$(python3 -c "import archspec.cpu; print(str(archspec.cpu.host()))"); echo $(ls /scicomp/eessi/$MICRO_ARCH);'
 
 #      - name: Install EasyBuild
 #        run: | 
