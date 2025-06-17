@@ -7,12 +7,6 @@ FROM rockylinux:8
 LABEL maintainer="carlos.perez@dipc.com"
 ENV DEBIAN_FRONTEND=noninteractive
 
-ARG UID=1001
-ARG GID=1001
-
-RUN groupadd -g $GID scicomp && \
-    useradd -m -u $UID -g $GID scicomp
-
 ## ---- Create directories and configuration -----------------------------------
 #RUN mkdir -p /etc/cvmfs/keys \
              #/etc/cvmfs/config.d \
@@ -40,7 +34,12 @@ RUN groupadd -g $GID scicomp && \
 #RUN dnf clean all
 
 # ---- Add non-root user ------------------------------------------------------
-RUN useradd -m scicomp && echo "scicomp ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+ARG UID=1001
+ARG GID=1001
+
+RUN groupadd -g $GID scicomp && \
+    useradd -m -u $UID -g $GID scicomp && \
+    echo "scicomp ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 ENV USER=scicomp
 ENV HOME=/home/scicomp
 WORKDIR /home/scicomp
