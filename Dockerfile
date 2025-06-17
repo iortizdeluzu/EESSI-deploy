@@ -27,7 +27,7 @@ COPY example.domain.tld.pub example.domain.tld.crt example.domain.tld.masterkey 
 #CMD echo "CVMFS container ready. Run with --cap-add SYS_ADMIN --device /dev/fuse and then execute:\n  cvmfs2 -o config=/etc/cvmfs/default.local example.domain.tld /cvmfs/example.domain.tld" && exec mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld && /bin/bash
 
 # ---- Install EPEL, CVMFS repo, and CVMFS itself -----------------------------
-RUN dnf -y install epel-release curl gcc make which git sudo wget bzip2 rsync bc
+RUN dnf -y install epel-release curl gcc make which git sudo wget bzip2 rsync bc httpd apache2
 RUN yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
 RUN dnf clean all 
 RUN dnf -y install cvmfs cvmfs-config-default cvmfs-server cvmfs-gateway
