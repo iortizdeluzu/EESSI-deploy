@@ -4,9 +4,9 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:  # Allow manual triggering
-    paths:
-      - 'apptainer.def'
-      - '.github/workflows/build-container.yml'
+#    paths:
+#      - 'apptainer.def'
+#      - '.github/workflows/build-container.yml'
 
 
 jobs:
