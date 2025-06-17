@@ -16,9 +16,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create CVMFS public key file
+      - name: Create CVMFS keys file
         run: |
           echo "${{ secrets.stratum0 }}" > example.domain.tld.pub
+          echo "${{ secrets.masterkey }}" > example.domain.tld.masterkey
+          echo "${{ secrets.certificate }}" > example.domain.tld.crt
 
       - name: Build Docker container
         env:
