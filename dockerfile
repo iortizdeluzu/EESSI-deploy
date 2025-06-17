@@ -33,12 +33,8 @@ RUN mkdir -p /etc/cvmfs/keys \
 #RUN cvmfs_config setup\
 #    cvmfs_config reload example.domain.tld
 
-# ---- Copy your public key ----------------------------------------------------
-COPY example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
-# ---- Copy your master key ----------------------------------------------------
-COPY example.domain.tld.masterkey /etc/cvmfs/keys/example.domain.tld.masterkey
-# ---- Copy your certificate key ----------------------------------------------------
-COPY example.domain.tld.crt /etc/cvmfs/keys/example.domain.tld.crt
+# ---- Copy your stratum0 keys ----------------------------------------------------
+COPY example.domain.tld.pub example.domain.tld.crt example.domain.tld.masterkey /etc/cvmfs/keys/
 
 # ---- Default startup ---------------------------------------------------------
 # You need FUSE privileges to mount; the CMD prints a hint, then drops to bash.
