@@ -78,4 +78,4 @@ jobs:
             --tmpfs /cvmfs:exec \
             --user root \
             cvmfs-rocky8 \
-            bash -c "cvmfs_server add_replica -o cvmfs -w -w http://158.227.172.103/cvmfs/example.domain.tld example.domain.tld"
+            bash -c "cvmfs_server add-replica -o cvmfs -w -w http://158.227.172.103/cvmfs/example.domain.tld example.domain.tld"
