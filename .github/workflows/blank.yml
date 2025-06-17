@@ -1,12 +1,9 @@
-name: Build Apptainer Container
+name: Build Container
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main,test_gentoo_prefix ]
   workflow_dispatch:  # Allow manual triggering
-    paths:
-      - 'apptainer.def'
-      - '.github/workflows/build-container.yml'
 
 
 jobs:
@@ -16,22 +13,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create CVMFS public key file
-        run: |
-          echo "${{ secrets.stratum0 }}" > example.domain.tld.pub
+      #- name: Create CVMFS public key file
+        #run: |
+          #echo "${{ secrets.stratum0 }}" > example.domain.tld.pub
 
       - name: Build Docker container
         env:
           BUILDAH_ISOLATION: chroot   # <- key line
           BUILDAH_STORAGE_DRIVER: vfs # (drop if you prefer fuse‑overlayfs)
         run: |
-          docker build -t cvmfs-rocky8 .
-          
+          docker build -t gentoo-prefix-rocky8 .
+
       - name: Execute Docker container
         run: |
-          docker run --rm -i --cap-add SYS_ADMIN --device /dev/fuse --security-opt apparmor:unconfined cvmfs-rocky8
-          
-      - name: Mount and list CVMFS repo inside container
+          docker run --rm -i --cap-add SYS_ADMIN --device /dev/fuse --security-opt apparmor:unconfined gentoo-prefix-rocky8
+
+      - name: Execute Docker and run arhcspec inside container
         run: |
 
           docker run --rm \
@@ -40,8 +37,8 @@ jobs:
             --security-opt apparmor:unconfined \
             --tmpfs /cvmfs:exec \
             --user root \
-            cvmfs-rocky8 \
-            bash -c "mkdir -p /cvmfs/example.domain.tld && mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld && ls /cvmfs/example.domain.tld"
+            gentoo-prefix-rocky8 \
+            bash -c 'python -c "import archspec; print(str(archspec.cpu.host()))"'
 
 #      - name: Install EasyBuild
 #        run: | 
