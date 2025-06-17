@@ -33,8 +33,10 @@ RUN mkdir -p /etc/cvmfs/keys \
 #RUN cvmfs_config setup\
 #    cvmfs_config reload example.domain.tld
 
-# ---- Copy your public key ----------------------------------------------------
+# ---- Copy your public and private key ----------------------------------------------------
 COPY example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
+COPY example.domain.tld.masterkey /etc/cvmfs/keys/example.domain.tld.masterkey
+COPY example.domain.tld.crt /etc/cvmfs/keys/example.domain.tld.crt
 
 # ---- Default startup ---------------------------------------------------------
 # You need FUSE privileges to mount; the CMD prints a hint, then drops to bash.
