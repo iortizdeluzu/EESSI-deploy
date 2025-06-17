@@ -52,4 +52,5 @@ WORKDIR /home/scicomp
 
 # ---- Install archspec -----
 RUN dnf -y install python3.12
-RUN pip install archspec
+RUN dnf -y install python3.12-pip
+RUN pip3 -y install archspec
