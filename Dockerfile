@@ -63,7 +63,7 @@ WORKDIR /home/scicomp
 
 # Download gentoo-prefix
 RUN dnf -y install curl
-RUN curl https://gitweb.gentoo.org/repo/proj/prefix.git/plain/scripts/bootstrap-prefix.sh
+RUN curl https://gitweb.gentoo.org/repo/proj/prefix.git/plain/scripts/bootstrap-prefix.sh -o bootstrap_prefix.sh
 RUN chmod +x ./bootstrap-prefix.sh
 
 # Copy script to install gentoo prefix
