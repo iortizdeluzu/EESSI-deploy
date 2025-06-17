@@ -43,15 +43,28 @@ jobs:
             cvmfs-rocky8 \
             bash -c "mkdir -p /cvmfs/example.domain.tld && mount -t cvmfs example.domain.tld /cvmfs/example.domain.tld && ls /cvmfs/example.domain.tld"
 
-#      - name: Install EasyBuild
-#        run: | 
-#          docker run --rm \
-#          --device /dev/fuse \
-#          --security-opt apparmor:unconfined \
-#          --tmpfs /cvmfs:exec \
-#          -e USER=scicomp \
-#          -e HOME=/home/scicomp \
-#          -w /home/scicomp \
-#          --user scicomp \
-#          cvmfs-rocky8 \
-#          bash -c "cd /sci-env/scripts && ls && bash install.sh"
+      - name: Check Easybuild installation
+        run: | 
+          docker run --rm \
+          --device /dev/fuse \
+          --security-opt apparmor:unconfined \
+          --tmpfs /cvmfs:exec \
+          -e USER=scicomp \
+          -e HOME=/home/scicomp \
+          -w /home/scicomp \
+          --user scicomp \
+          cvmfs-rocky8 \
+          bash -c "source /home/scicomp/.bashrc && module load EasyBuild && eb --version"
+
+      - name: Install Go with EasyBuild
+        run: | 
+          docker run --rm \
+          --device /dev/fuse \
+          --security-opt apparmor:unconfined \
+          --tmpfs /cvmfs:exec \
+          -e USER=scicomp \
+          -e HOME=/home/scicomp \
+          -w /home/scicomp \
+          --user scicomp \
+          cvmfs-rocky8 \
+          bash -c "source /home/scicomp/.bashrc && module load EasyBuild && eb Go -r && ml load Go && go --version"
