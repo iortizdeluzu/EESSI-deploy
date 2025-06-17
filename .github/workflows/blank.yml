@@ -38,7 +38,7 @@ jobs:
             --tmpfs /cvmfs:exec \
             --user root \
             gentoo-prefix-rocky8 \
-            bash -c 'python3 -c "import archspec; print(str(archspec.cpu.host()))"'
+            bash -c 'python3 -c "import archspec.cpu; print(str(archspec.cpu.host()))"'
 
 #      - name: Install EasyBuild
 #        run: | 
