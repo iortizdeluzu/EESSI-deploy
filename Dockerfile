@@ -30,7 +30,7 @@ COPY example.domain.tld.pub /etc/cvmfs/keys/example.domain.tld.pub
 RUN dnf -y install epel-release curl gcc make which git sudo wget bzip2 rsync bc
 RUN yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
 RUN dnf clean all 
-RUN dnf -y install cvmfs cvmfs-config-default
+RUN dnf -y install cvmfs cvmfs-config-default cvmfs-server cvmfs-gateway
 RUN dnf clean all
 
 # ---- Add non-root user ------------------------------------------------------
