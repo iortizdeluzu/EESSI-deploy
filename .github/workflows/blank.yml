@@ -77,5 +77,6 @@ jobs:
             --security-opt apparmor:unconfined \
             --tmpfs /cvmfs:exec \
             --user root \
+            -e CVMFS_GEO_ACCOUNT_ID=dummy \
             cvmfs-rocky8 \
             bash -c "cvmfs_server add-replica -o cvmfs -w -w http://158.227.172.103/cvmfs/example.domain.tld example.domain.tld"
