@@ -60,5 +60,12 @@ RUN dnf -y install python3.12
 RUN dnf -y install python3.12-pip
 RUN pip3 install archspec
 WORKDIR /home/scicomp
+
+# Download gentoo-prefix
+RUN dnf -y install curl
+RUN curl https://gitweb.gentoo.org/repo/proj/prefix.git/plain/scripts/bootstrap-prefix.sh
+RUN chmod +x ./bootstrap-prefix.sh
+
+# Copy script to install gentoo prefix
 COPY install_gentoo_prefix.sh ./install_gentoo_prefix.sh
 RUN chmod +x ./install_gentoo_prefix.sh

@@ -13,4 +13,5 @@ if [ -d "$REPO_PATH" ]; then
 else
   echo "$REPO_PATH does not exist"s
   mkdir -p $REPO_PATH
+  ./bootstrap_prefix.sh $REPO_PATH noninteractive
 fi
