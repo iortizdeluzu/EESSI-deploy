@@ -68,3 +68,14 @@ jobs:
           --user scicomp \
           cvmfs-rocky8 \
           bash -c "source /home/scicomp/.bashrc && module load EasyBuild && eb Go-1.22.1.eb -r && ml load Go && go version"
+
+      - name: Mounting Stratum1 into the container
+        run: |
+          docker run --rm \
+            --cap-add SYS_ADMIN \
+            --device /dev/fuse \
+            --security-opt apparmor:unconfined \
+            --tmpfs /cvmfs:exec \
+            --user root \
+            cvmfs-rocky8 \
+            bash -c "cvmfs_server add_replica -o cvmfs -w -w http://158.227.172.103/cvmfs/example.domain.tld example.domain.tld"
