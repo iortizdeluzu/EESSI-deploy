@@ -62,7 +62,7 @@ RUN pip3 install archspec
 WORKDIR /home/scicomp
 
 # Download gentoo-prefix
-RUN dnf -y install wget
+RUN dnf -y install epel-release wget curl gcc make which git sudo wget bzip2 rsync bc
 WORKDIR /home/scicomp
 RUN wget https://gitweb.gentoo.org/repo/proj/prefix.git/plain/scripts/bootstrap-prefix.sh
 RUN chmod +x ./bootstrap-prefix.sh
