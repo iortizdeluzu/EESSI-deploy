@@ -15,4 +15,4 @@ else
   mkdir -p $REPO_PATH
 fi
 
-./bootstrap_prefix.sh $REPO_PATH noninteractive
+/home/scicomp/bootstrap_prefix.sh $REPO_PATH noninteractive
