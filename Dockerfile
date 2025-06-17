@@ -7,6 +7,13 @@ FROM rockylinux:8
 LABEL maintainer="carlos.perez@dipc.com"
 ENV DEBIAN_FRONTEND=noninteractive
 
+ARG UID=1001
+ARG GID=1001
+
+RUN groupadd -g $GID scicomp && \
+    useradd -m -u $UID -g $GID scicomp && \
+    echo "scicomp ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 ## ---- Create directories and configuration -----------------------------------
 #RUN mkdir -p /etc/cvmfs/keys \
              #/etc/cvmfs/config.d \
