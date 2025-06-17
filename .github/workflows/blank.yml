@@ -27,7 +27,7 @@ jobs:
           BUILDAH_ISOLATION: chroot   # <- key line
           BUILDAH_STORAGE_DRIVER: vfs # (drop if you prefer fuse‑overlayfs)
         run: |
-          docker build -t cvmfs-rocky8 .
+          docker build --no-cache -t cvmfs-rocky8 .
           
       - name: Execute Docker container
         run: |
