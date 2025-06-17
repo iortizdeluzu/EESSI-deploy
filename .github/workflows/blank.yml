@@ -39,7 +39,7 @@ jobs:
             --user root \
             --mount type=bind,src=/scicomp/eessi-test,dst=/scicomp/eessi \
             gentoo-prefix-rocky8 \
-            bash /home/scicomp/install_gentoo_prefix.sh
+            bash -c '/home/scicomp/install_gentoo_prefix.sh'
 
 #      - name: Install EasyBuild
 #        run: | 
