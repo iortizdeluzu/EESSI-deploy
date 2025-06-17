@@ -11,8 +11,7 @@ ARG UID=1001
 ARG GID=1001
 
 RUN groupadd -g $GID scicomp && \
-    useradd -m -u $UID -g $GID scicomp && \
-    echo "scicomp ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    useradd -m -u $UID -g $GID scicomp
 
 ## ---- Create directories and configuration -----------------------------------
 #RUN mkdir -p /etc/cvmfs/keys \
