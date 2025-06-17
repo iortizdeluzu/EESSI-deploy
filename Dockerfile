@@ -64,6 +64,8 @@ WORKDIR /home/scicomp
 # Download gentoo-prefix
 RUN dnf -y install wget
 WORKDIR /home/scicomp
+RUN wget https://gitweb.gentoo.org/repo/proj/prefix.git/plain/scripts/bootstrap-prefix.sh
+RUN chmod +x ./bootstrap-prefix.sh
 
 # Copy script to install gentoo prefix
 COPY install_gentoo_prefix.sh ./install_gentoo_prefix.sh
